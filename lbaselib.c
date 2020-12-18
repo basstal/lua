@@ -114,9 +114,11 @@ static int luaB_tonumber (lua_State *L) {
 static int luaB_error (lua_State *L) {
   int level = (int)luaL_optinteger(L, 2, 1);
   lua_settop(L, 1);
+  // NOTE:感觉一般不会用到这个level参数
   if (lua_type(L, 1) == LUA_TSTRING && level > 0) {
     luaL_where(L, level);   /* add extra information */
     lua_pushvalue(L, 1);
+    // 将额外信息和当前栈顶信息拼接起来，并入栈
     lua_concat(L, 2);
   }
   return lua_error(L);
@@ -126,9 +128,11 @@ static int luaB_error (lua_State *L) {
 static int luaB_getmetatable (lua_State *L) {
   luaL_checkany(L, 1);
   if (!lua_getmetatable(L, 1)) {
+  // 如果这个table没有metatable则返回nil
     lua_pushnil(L);
     return 1;  /* no metatable */
   }
+  // 从这个metatable中获取__metatable字段
   luaL_getmetafield(L, 1, "__metatable");
   return 1;  /* returns either __metatable field (if present) or metatable */
 }
@@ -188,26 +192,37 @@ static int pushmode (lua_State *L, int oldmode) {
 
 
 static int luaB_collectgarbage (lua_State *L) {
+  // NOTE:collectgarbage 参数
   static const char *const opts[] = {"stop", "restart", "collect",
     "count", "step", "setpause", "setstepmul",
     "isrunning", "generational", "incremental", NULL};
   static const int optsnum[] = {LUA_GCSTOP, LUA_GCRESTART, LUA_GCCOLLECT,
     LUA_GCCOUNT, LUA_GCSTEP, LUA_GCSETPAUSE, LUA_GCSETSTEPMUL,
     LUA_GCISRUNNING, LUA_GCGEN, LUA_GCINC};
+    // 输入的第一个参数转换成字符串并与opts比较
   int o = optsnum[luaL_checkoption(L, 1, "collect", opts)];
   switch (o) {
+    // 返回当前虚拟机（global_state）的内存用量（单位是Kbytes）
     case LUA_GCCOUNT: {
       int k = lua_gc(L, o);
       int b = lua_gc(L, LUA_GCCOUNTB);
       lua_pushnumber(L, (lua_Number)k + ((lua_Number)b/1024));
       return 1;
     }
+    /* 
+    执行垃圾回收的步骤，这个步骤的大小由参数 arg （较大的数值意味着较多的步骤）以一种不特定的方式来决定，
+    如果你想控制步骤的大小，你必须实验性的调整参数 arg 的值，如果这一步完成了一个回收周期则函数返回true。
+    */
     case LUA_GCSTEP: {
       int step = (int)luaL_optinteger(L, 2, 0);
       int res = lua_gc(L, o, step);
       lua_pushboolean(L, res);
       return 1;
     }
+    /*
+    setpause 给参数arg设置一个新值，用于设置回收器的暂停参数，并返回原来的暂停数值。
+    setstepmul 给参数arg设置一个新值，用于设置回收器的步进乘数，并返回原来的步骤的值。
+    */
     case LUA_GCSETPAUSE:
     case LUA_GCSETSTEPMUL: {
       int p = (int)luaL_optinteger(L, 2, 0);
@@ -215,16 +230,19 @@ static int luaB_collectgarbage (lua_State *L) {
       lua_pushinteger(L, previous);
       return 1;
     }
+    // 检查当前GC是否在running状态
     case LUA_GCISRUNNING: {
       int res = lua_gc(L, o);
       lua_pushboolean(L, res);
       return 1;
     }
+    // 切换 generational 模式，并设置参数
     case LUA_GCGEN: {
       int minormul = (int)luaL_optinteger(L, 2, 0);
       int majormul = (int)luaL_optinteger(L, 3, 0);
       return pushmode(L, lua_gc(L, o, minormul, majormul));
     }
+    // 切换 incremental 模式，并设置参数
     case LUA_GCINC: {
       int pause = (int)luaL_optinteger(L, 2, 0);
       int stepmul = (int)luaL_optinteger(L, 3, 0);
@@ -391,7 +409,9 @@ static int dofilecont (lua_State *L, int d1, lua_KContext d2) {
 
 
 static int luaB_dofile (lua_State *L) {
+  // 获得第一个参数
   const char *fname = luaL_optstring(L, 1, NULL);
+  // 抛弃其他参数
   lua_settop(L, 1);
   if (luaL_loadfile(L, fname) != LUA_OK)
     return lua_error(L);
@@ -404,6 +424,7 @@ static int luaB_assert (lua_State *L) {
   if (lua_toboolean(L, 1))  /* condition is true? */
     return lua_gettop(L);  /* return all arguments */
   else {  /* error */
+  // call c 输出一个错误
     luaL_checkany(L, 1);  /* there must be a condition */
     lua_remove(L, 1);  /* remove it */
     lua_pushliteral(L, "assertion failed!");  /* default message */
@@ -414,15 +435,22 @@ static int luaB_assert (lua_State *L) {
 
 
 static int luaB_select (lua_State *L) {
+  // 获得栈元素个数
   int n = lua_gettop(L);
+  // 如果第一个参数是'#'
   if (lua_type(L, 1) == LUA_TSTRING && *lua_tostring(L, 1) == '#') {
+    // 返回后面参数的个数（用来计算可变参数...的个数）
     lua_pushinteger(L, n-1);
     return 1;
   }
   else {
+    // 如果第一个参数是数字
     lua_Integer i = luaL_checkinteger(L, 1);
+    // 负数可以倒着获取
     if (i < 0) i = n + i;
+    // 超过范围时获取最后一个
     else if (i > n) i = n;
+    // 检测合法性
     luaL_argcheck(L, 1 <= i, 1, "index out of range");
     return n - (int)i;
   }

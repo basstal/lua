@@ -59,7 +59,11 @@ typedef union Value {
 ** Tagged Values. This is the basic representation of values in Lua:
 ** an actual value plus a tag with its type.
 */
-
+/*
+NOTE:
+在 Lua 中，值通过 TValue 结构体来表示。
+包括了一个值以及其类型。在 Value 中，gc 表示需要垃圾回收的一些值，如 string、table 等；p 表示 light userdata，不会被 gc 的。
+*/
 #define TValuefields	Value value_; lu_byte tt_
 
 typedef struct TValue {
@@ -263,6 +267,7 @@ typedef StackValue *StkId;
 ** Common Header for all collectable objects (in macro form, to be
 ** included in other objects)
 */
+//NOTE:需要 gc 的数据类型，都会有一个 CommonHeader 成员，并且这个成员在结构体定义的最开始部分。
 #define CommonHeader	struct GCObject *next; lu_byte tt; lu_byte marked
 
 

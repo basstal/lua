@@ -60,6 +60,19 @@ typedef struct lua_State lua_State;
 /*
 ** basic types
 */
+/*
+NOTE:需要注意的数据类型是 userdata，在内部实现分为了 LUA_TLIGHTUSERDATA 和 LUA_TUSERDATA，
+两者都对应 void* 指针，区别在于，前者是由 Lua 外部的使用者来完成，后者则是通过 Lua 内部来完成，也就是说前者是通过用户来维护其生命周期。
+
+某些结构可以在lobject.h中搜到对应的struct:
+
+USERDATA 缩写为 Udata 分为Udata0和Udata -> lobject.h:463
+
+TString -> lobject.h:369
+
+TTABLE -> lobject.h:719
+
+*/
 #define LUA_TNONE		(-1)
 
 #define LUA_TNIL		0

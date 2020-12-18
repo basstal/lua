@@ -169,7 +169,7 @@ LUA_API int lua_gettop (lua_State *L) {
   return cast_int(L->top - (L->ci->func + 1));
 }
 
-
+// 设置栈顶位置
 LUA_API void lua_settop (lua_State *L, int idx) {
   CallInfo *ci;
   StkId func;
@@ -178,12 +178,15 @@ LUA_API void lua_settop (lua_State *L, int idx) {
   ci = L->ci;
   func = ci->func;
   if (idx >= 0) {
+    // 从栈底部开始，设置一个从底部到顶部的位置值
     api_check(L, idx <= ci->top - (func + 1), "new top too large");
     diff = ((func + 1) + idx) - L->top;
     for (; diff > 0; diff--)
+    // 将新增的栈值都设置为nil
       setnilvalue(s2v(L->top++));  /* clear new slots */
   }
   else {
+    // 从顶部开始，设置偏移，-1认为是栈顶，-2是栈顶值-1
     api_check(L, -(idx+1) <= (L->top - (func + 1)), "invalid new top");
     diff = idx + 1;  /* will "subtract" index (as it is negative) */
   }
@@ -747,7 +750,7 @@ LUA_API void lua_createtable (lua_State *L, int narray, int nrec) {
   lua_unlock(L);
 }
 
-
+// 获取各种类型的 metatable ，基本类型在 global_State 共享 metatable
 LUA_API int lua_getmetatable (lua_State *L, int objindex) {
   const TValue *obj;
   Table *mt;
@@ -762,11 +765,14 @@ LUA_API int lua_getmetatable (lua_State *L, int objindex) {
       mt = uvalue(obj)->metatable;
       break;
     default:
+    // 基本类型共享 metatable ，从 global_State 取
       mt = G(L)->mt[ttype(obj)];
       break;
   }
   if (mt != NULL) {
+    // 将metatable设置到栈顶
     sethvalue2s(L, L->top, mt);
+    // 递增栈顶
     api_incr_top(L);
     res = 1;
   }
@@ -1104,6 +1110,21 @@ LUA_API int lua_status (lua_State *L) {
 
 /*
 ** Garbage-collection function
+*/
+/*
+NOTE:
+c va_list传参
+
+<Step 1> 在调用参数表之前，定义一个 va_list 类型的变量(argp)；
+
+<Step 2> 然后应该对 argp 进行初始化，让它指向可变参数表里面的第一个参数，这是通过 va_start 来实现的，
+第一个参数是 argp 本身，第二个参数是在变参表前面紧挨着的一个变量,即“...”之前的那个参数；
+
+<Step 3> 然后是获取参数，调用 va_arg ，它的第一个参数是 argp ，第二个参数是要获取的参数的指定类型，
+然后返回这个指定类型的值，并且把 argp 的位置指向变参表的下一个变量位置；
+
+<Step 4> 获取所有的参数之后，我们有必要将这个 argp 指针关掉，以免发生危险，方法是调用 va_end，
+它使输入的参数 argp 置为 NULL，应该养成获取完参数表之后关闭指针的习惯。说白了，就是让我们的程序具有健壮性。通常 va_start 和 va_end 是成对出现。
 */
 LUA_API int lua_gc (lua_State *L, int what, ...) {
   va_list argp;

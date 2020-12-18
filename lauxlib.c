@@ -213,6 +213,7 @@ static void tag_error (lua_State *L, int arg, int tag) {
 ** The use of 'lua_pushfstring' ensures this function does not
 ** need reserved stack space when called.
 */
+// 根据level获得额外的调用栈信息
 LUALIB_API void luaL_where (lua_State *L, int level) {
   lua_Debug ar;
   if (lua_getstack(L, level, &ar)) {  /* check function at level */
@@ -405,7 +406,9 @@ LUALIB_API const char *luaL_checklstring (lua_State *L, int arg, size_t *len) {
   return s;
 }
 
-
+/*
+NOTE:从Lua侧获得一个C字符串的地址？？
+*/
 LUALIB_API const char *luaL_optlstring (lua_State *L, int arg,
                                         const char *def, size_t *len) {
   if (lua_isnoneornil(L, arg)) {
@@ -831,7 +834,13 @@ LUALIB_API int luaL_loadstring (lua_State *L, const char *s) {
 /* }====================================================== */
 
 
-
+/* 
+从table（A）的metatable（Ameta）中获得字符串event对应的字段值，返回这个字段的类型
+对于没有metatable（Ameta）的table（A），不做任何改变；
+对于有metatable（Ameta）的table（A），Ameta在中寻找event字段；
+    - 如果字段类型为nil（不存在），不做任何改变，栈顶还是table（A）
+    - 如果字段存在（不为nil），则将栈顶设置为该字段值
+*/
 LUALIB_API int luaL_getmetafield (lua_State *L, int obj, const char *event) {
   if (!lua_getmetatable(L, obj))  /* no metatable? */
     return LUA_TNIL;
@@ -842,6 +851,7 @@ LUALIB_API int luaL_getmetafield (lua_State *L, int obj, const char *event) {
     if (tt == LUA_TNIL)  /* is metafield nil? */
       lua_pop(L, 2);  /* remove metatable and metafield */
     else
+    // 此时根据字符串event找到的字段值在栈顶
       lua_remove(L, -2);  /* remove only metatable */
     return tt;  /* return metafield type */
   }
