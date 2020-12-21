@@ -790,6 +790,15 @@ LUALIB_API int luaL_loadfilex (lua_State *L, const char *filename,
   }
   if (c != EOF)
     lf.buff[lf.n++] = c;  /* 'c' is the first character of the stream */
+
+    /* 从输入流到luafunction的解析
+    传入的参数：
+    1. 当前运行线程L
+    2. fread的c包装，读取一些内容（包括上次读取完还未处理的内容）到待处理的缓存（ loadF -> buff )中
+    3. loadF结构，代表已打开待读取的文件
+    4. chunkname
+    5. parser -> mode处理方式
+*/
   status = lua_load(L, getF, &lf, lua_tostring(L, -1), mode);
   readstatus = ferror(lf.f);
   if (filename) fclose(lf.f);  /* close file (even in case of errors) */
@@ -817,7 +826,7 @@ static const char *getS (lua_State *L, void *ud, size_t *size) {
   return ls->s;
 }
 
-
+// 直接将buff的字符内容转换为lua function
 LUALIB_API int luaL_loadbufferx (lua_State *L, const char *buff, size_t size,
                                  const char *name, const char *mode) {
   LoadS ls;

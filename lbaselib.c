@@ -42,6 +42,7 @@ static int luaB_print (lua_State *L) {
 ** Check first for errors; otherwise an error may interrupt
 ** the composition of a warning, leaving it unfinished.
 */
+// '@'开头的字符串被作为控制字符串，有效的控制字符串有"@on"/"@off"，来控制警告系统自身的开关
 static int luaB_warn (lua_State *L) {
   int n = lua_gettop(L);  /* number of arguments */
   int i;
@@ -79,6 +80,7 @@ static const char *b_str2int (const char *s, int base, lua_Integer *pn) {
 
 
 static int luaB_tonumber (lua_State *L) {
+  // 第二个参数代表转换进制的基
   if (lua_isnoneornil(L, 2)) {  /* standard conversion? */
     if (lua_type(L, 1) == LUA_TNUMBER) {  /* already a number? */
       lua_settop(L, 1);  /* yes; return it */
@@ -141,7 +143,9 @@ static int luaB_getmetatable (lua_State *L) {
 static int luaB_setmetatable (lua_State *L) {
   int t = lua_type(L, 2);
   luaL_checktype(L, 1, LUA_TTABLE);
+  // 检查参数2的类型必须为 nil 或者 table
   luaL_argexpected(L, t == LUA_TNIL || t == LUA_TTABLE, 2, "nil or table");
+  // 如果参数1 table 的 metafield 已经定义了 __metatable字段，则返回一个受保护的metatable错误
   if (luaL_getmetafield(L, 1, "__metatable") != LUA_TNIL)
     return luaL_error(L, "cannot change a protected metatable");
   lua_settop(L, 2);
@@ -149,7 +153,7 @@ static int luaB_setmetatable (lua_State *L) {
   return 1;
 }
 
-
+// 不触发__eq元方法的equal判断
 static int luaB_rawequal (lua_State *L) {
   luaL_checkany(L, 1);
   luaL_checkany(L, 2);
@@ -157,7 +161,7 @@ static int luaB_rawequal (lua_State *L) {
   return 1;
 }
 
-
+// 不触发__len元方法的len判断
 static int luaB_rawlen (lua_State *L) {
   int t = lua_type(L, 1);
   luaL_argexpected(L, t == LUA_TTABLE || t == LUA_TSTRING, 1,
@@ -166,7 +170,7 @@ static int luaB_rawlen (lua_State *L) {
   return 1;
 }
 
-
+// 相当于不触发__index元方法的gettable
 static int luaB_rawget (lua_State *L) {
   luaL_checktype(L, 1, LUA_TTABLE);
   luaL_checkany(L, 2);
@@ -175,6 +179,7 @@ static int luaB_rawget (lua_State *L) {
   return 1;
 }
 
+// 相当于不触发__newindex元方法的settable
 static int luaB_rawset (lua_State *L) {
   luaL_checktype(L, 1, LUA_TTABLE);
   luaL_checkany(L, 2);
@@ -265,7 +270,8 @@ static int luaB_type (lua_State *L) {
   return 1;
 }
 
-
+// 根据参数二（可选）指定的key，获得table中的元素，
+// 如果参数二不存在，则返回第一个元素（可能是数组也可能是字典）
 static int luaB_next (lua_State *L) {
   luaL_checktype(L, 1, LUA_TTABLE);
   lua_settop(L, 2);  /* create a 2nd argument if there isn't one */
@@ -280,11 +286,14 @@ static int luaB_next (lua_State *L) {
 
 static int luaB_pairs (lua_State *L) {
   luaL_checkany(L, 1);
+  // 如果元表中没有元方法 __pairs ，则使用 next 作为函数作为迭代函数
   if (luaL_getmetafield(L, 1, "__pairs") == LUA_TNIL) {  /* no metamethod? */
     lua_pushcfunction(L, luaB_next);  /* will return generator, */
     lua_pushvalue(L, 1);  /* state, */
     lua_pushnil(L);  /* and initial value */
   }
+  // 否则将 __pairs 作为有1个参数3个返回值的函数调用，参数为pairs的参数1
+  // 返回的第一个参数应是一个作用同 next 的函数
   else {
     lua_pushvalue(L, 1);  /* argument 'self' to metamethod */
     lua_call(L, 1, 3);  /* get 3 values from metamethod */
@@ -297,8 +306,11 @@ static int luaB_pairs (lua_State *L) {
 ** Traversal function for 'ipairs'
 */
 static int ipairsaux (lua_State *L) {
+    // 取第二个参数（并判断是否为整数）+ 1
   lua_Integer i = luaL_checkinteger(L, 2) + 1;
   lua_pushinteger(L, i);
+  // 从第一个参数中获得下标i的值V
+  // 如果这个值V不为nil，则返回两个参数（参数1 -> i 参数2 -> 值V），否则返回一个参数nil
   return (lua_geti(L, 1, i) == LUA_TNIL) ? 1 : 2;
 }
 
@@ -309,8 +321,11 @@ static int ipairsaux (lua_State *L) {
 */
 static int luaB_ipairs (lua_State *L) {
   luaL_checkany(L, 1);
+  // 迭代器c函数
   lua_pushcfunction(L, ipairsaux);  /* iteration function */
+  // 传入的第一个参数
   lua_pushvalue(L, 1);  /* state */
+  // 初始位置
   lua_pushinteger(L, 0);  /* initial value */
   return 3;
 }
@@ -334,10 +349,18 @@ static int load_aux (lua_State *L, int status, int envidx) {
 
 
 static int luaB_loadfile (lua_State *L) {
+  // 参数1：文件名字符串
   const char *fname = luaL_optstring(L, 1, NULL);
+  // 参数2：文件加载模式字符串
+  /*
+  The string mode controls whether the chunk can be text or binary (that is, a precompiled chunk). 
+  It may be the string "b" (only binary chunks), "t" (only text chunks), or "bt" (both binary and text). The default is "bt".
+  */
   const char *mode = luaL_optstring(L, 2, NULL);
+  // 参数3（可选）：加载环境
   int env = (!lua_isnone(L, 3) ? 3 : 0);  /* 'env' index or 0 if no 'env' */
   int status = luaL_loadfilex(L, fname, mode);
+  // 设置 env 为 load function 的upvalue并返回
   return load_aux(L, status, env);
 }
 
@@ -386,10 +409,13 @@ static int luaB_load (lua_State *L) {
   const char *s = lua_tolstring(L, 1, &l);
   const char *mode = luaL_optstring(L, 3, "bt");
   int env = (!lua_isnone(L, 4) ? 4 : 0);  /* 'env' index or 0 if no 'env' */
+  // 对于以下两种加载，参数2都表示chunkname
+  // 如果参数1是lua字符串
   if (s != NULL) {  /* loading a string? */
     const char *chunkname = luaL_optstring(L, 2, s);
     status = luaL_loadbufferx(L, s, l, chunkname, mode);
   }
+  // 如果参数1是lua函数，这个函数的返回值必须是字符串
   else {  /* loading from a reader function */
     const char *chunkname = luaL_optstring(L, 2, "=(load)");
     luaL_checktype(L, 1, LUA_TFUNCTION);
@@ -433,13 +459,13 @@ static int luaB_assert (lua_State *L) {
   }
 }
 
-
+// 主要用于处理lua的可变参数 ... 
 static int luaB_select (lua_State *L) {
   // 获得栈元素个数
   int n = lua_gettop(L);
   // 如果第一个参数是'#'
   if (lua_type(L, 1) == LUA_TSTRING && *lua_tostring(L, 1) == '#') {
-    // 返回后面参数的个数（用来计算可变参数...的个数）
+    // 返回后面参数的个数（用来计算可变参数 ... 的个数）
     lua_pushinteger(L, n-1);
     return 1;
   }
@@ -467,6 +493,7 @@ static int luaB_select (lua_State *L) {
 static int finishpcall (lua_State *L, int status, lua_KContext extra) {
   if (status != LUA_OK && status != LUA_YIELD) {  /* error? */
     lua_pushboolean(L, 0);  /* first result (false) */
+    // pcall捕获错误后，并不会调用消息处理函数
     lua_pushvalue(L, -2);  /* error message */
     return 2;  /* return false, msg */
   }
@@ -480,7 +507,9 @@ static int luaB_pcall (lua_State *L) {
   luaL_checkany(L, 1);
   lua_pushboolean(L, 1);  /* first result if no errors */
   lua_insert(L, 1);  /* put it in place */
+  // 减去两个刚入栈的，就是调用函数的参数
   status = lua_pcallk(L, lua_gettop(L) - 2, LUA_MULTRET, 0, 0, finishpcall);
+  // 负责处理错误，并截走返回值
   return finishpcall(L, status, 0);
 }
 
