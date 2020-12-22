@@ -176,21 +176,25 @@ static int str_rep (lua_State *L) {
 static int str_byte (lua_State *L) {
   size_t l;
   const char *s = luaL_checklstring(L, 1, &l);
+  // 获得参数2 or 缺省值1 代表startpos
   lua_Integer pi = luaL_optinteger(L, 2, 1);
   size_t posi = posrelatI(pi, l);
+  // 获得参数3 代表endpos 如果没有参数3 则使用缺省值pi
   size_t pose = getendpos(L, 3, pi, l);
   int n, i;
   if (posi > pose) return 0;  /* empty interval; return no values */
   if (pose - posi >= (size_t)INT_MAX)  /* arithmetic overflow? */
     return luaL_error(L, "string slice too long");
+  // 计算返回的值个数
   n = (int)(pose -  posi) + 1;
   luaL_checkstack(L, n, "string slice too long");
+  // 从startpos位置开始 返回值的字符码依次入栈
   for (i=0; i<n; i++)
     lua_pushinteger(L, uchar(s[posi+i-1]));
   return n;
 }
 
-
+// 将 UCHAR_MAX 范围内的整数值转换为字符，支持多参数
 static int str_char (lua_State *L) {
   int n = lua_gettop(L);  /* number of arguments */
   int i;
@@ -213,7 +217,7 @@ static int str_char (lua_State *L) {
 ** push stuff.)
 */
 struct str_Writer {
-  int init;  /* true iff buffer has been initialized */
+  int init;  /* true if buffer has been initialized */
   luaL_Buffer B;
 };
 
@@ -228,7 +232,11 @@ static int writer (lua_State *L, const void *b, size_t size, void *ud) {
   return 0;
 }
 
-
+/*
+返回第一个参数（function）的二进制表示，以便用load函数载入这个function的副本
+如果第二个参数strip为true，则二进制表示不包含任何debug信息
+具有upvalues的function只有upvalues的数量，载入后这些upvalues将被赋予新的实例
+*/
 static int str_dump (lua_State *L) {
   struct str_Writer state;
   int strip = lua_toboolean(L, 2);
