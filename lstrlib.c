@@ -386,6 +386,18 @@ static const char *match (MatchState *ms, const char *s, const char *p);
 
 
 #define L_ESC		'%'
+/* 用于字符串匹配的魔法字符
+  ^ 匹配字符串的开始
+  $ 匹配字符串的结束
+  * 零个or多个，尽可能长的匹配
+  + 一个or多个，尽可能长的匹配
+  - 零个or多个，最短匹配;如果在set中，代表一个升序的字符范围
+  ? 零个or一个，尽可能匹配一个
+  . 任意字符匹配
+  ( 代表一个捕获的开始
+  [ 代表一个set的开始
+  % 预定义的set
+*/
 #define SPECIALS	"^$*+?.([%-"
 
 
@@ -571,7 +583,7 @@ static const char *match_capture (MatchState *ms, const char *s, int l) {
   else return NULL;
 }
 
-
+// 字符串匹配（带魔法字符）
 static const char *match (MatchState *ms, const char *s, const char *p) {
   if (ms->matchdepth-- == 0)
     luaL_error(ms->L, "pattern too complex");
@@ -779,12 +791,14 @@ static int str_find_aux (lua_State *L, int find) {
   size_t ls, lp;
   const char *s = luaL_checklstring(L, 1, &ls);
   const char *p = luaL_checklstring(L, 2, &lp);
+  // 参数3决定开始位置
   size_t init = posrelatI(luaL_optinteger(L, 3, 1), ls) - 1;
   if (init > ls) {  /* start after string's end? */
     luaL_pushfail(L);  /* cannot find anything */
     return 1;
   }
   /* explicit request or no special characters? */
+  // 精确查找
   if (find && (lua_toboolean(L, 4) || nospecials(p, lp))) {
     /* do a plain search */
     const char *s2 = lmemfind(s + init, ls - init, p, lp);
@@ -794,6 +808,7 @@ static int str_find_aux (lua_State *L, int find) {
       return 2;
     }
   }
+  // 带魔法字符的查找
   else {
     MatchState ms;
     const char *s1 = s + init;
@@ -856,10 +871,12 @@ static int gmatch_aux (lua_State *L) {
 }
 
 
+// NOTE:这个函数的调用构造了一个闭包并调用 gmatch_aux
 static int gmatch (lua_State *L) {
   size_t ls, lp;
   const char *s = luaL_checklstring(L, 1, &ls);
   const char *p = luaL_checklstring(L, 2, &lp);
+  // 参数3 指定一个开始匹配的位置
   size_t init = posrelatI(luaL_optinteger(L, 3, 1), ls) - 1;
   GMatchState *gm;
   lua_settop(L, 2);  /* keep strings on closure to avoid being collected */
@@ -925,10 +942,14 @@ static int add_value (MatchState *ms, luaL_Buffer *b, const char *s,
       break;
     }
     default: {  /* LUA_TNUMBER or LUA_TSTRING */
+    /*
+    用%字符转义，%d -> d在1-9之间，表示第几个捕获，%0表示整个捕获
+    */
       add_s(ms, b, s, e);  /* add value to the buffer */
       return 1;  /* something changed */
     }
   }
+  // 如果repl的最终值（可能从function or table中得到）是nil or false，则保留原字符串
   if (!lua_toboolean(L, -1)) {  /* nil or false? */
     lua_pop(L, 1);  /* remove value */
     luaL_addlstring(b, s, e - s);  /* keep original text */
@@ -1277,6 +1298,8 @@ static int str_format (lua_State *L) {
           nb = l_sprintf(buff, maxitem, form, (LUAI_UACNUMBER)n);
           break;
         }
+        // 返回唯一地址来表示以下类型的指针：tables, userdata, threads, strings, and functions. 
+        // 其他类型 (numbers, nil, booleans) 返回(null)
         case 'p': {
           const void *p = lua_topointer(L, arg);
           if (p == NULL) {  /* avoid calling 'printf' with argument NULL */
@@ -1286,6 +1309,8 @@ static int str_format (lua_State *L) {
           nb = l_sprintf(buff, maxitem, form, p);
           break;
         }
+        // 自动的类型转换，不支持任何修饰符
+        // 对于字符串的输出，会返回一个能够重新读入并且值相同的字符串表示（自动处理转义、换行等）
         case 'q': {
           if (form[2] != '\0')  /* modifiers? */
             return luaL_error(L, "specifier '%%q' cannot have modifiers");
