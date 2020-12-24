@@ -96,11 +96,13 @@ static size_t getendpos (lua_State *L, int arg, lua_Integer def,
   else return len + (size_t)pos + 1;
 }
 
-
+// 获取子串
 static int str_sub (lua_State *L) {
   size_t l;
   const char *s = luaL_checklstring(L, 1, &l);
+  // 参数2 开始位置
   size_t start = posrelatI(luaL_checkinteger(L, 2), l);
+  // 参数3 结束位置
   size_t end = getendpos(L, 3, -1, l);
   if (start <= end)
     lua_pushlstring(L, s + start - 1, (end - start) + 1);
@@ -150,7 +152,9 @@ static int str_upper (lua_State *L) {
 static int str_rep (lua_State *L) {
   size_t l, lsep;
   const char *s = luaL_checklstring(L, 1, &l);
+  // 参数2 重复次数
   lua_Integer n = luaL_checkinteger(L, 2);
+  // 参数3 每次重复的间隔字符串
   const char *sep = luaL_optlstring(L, 3, "", &lsep);
   if (n <= 0) lua_pushliteral(L, "");
   else if (l + lsep < l || l + lsep > MAXSIZE / n)  /* may overflow? */

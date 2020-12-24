@@ -112,9 +112,13 @@ static int tremove (lua_State *L) {
 ** than origin, or copying to another table.
 */
 static int tmove (lua_State *L) {
+  // 参数2 源table开始位置
   lua_Integer f = luaL_checkinteger(L, 2);
+  // 参数3 源table结束位置
   lua_Integer e = luaL_checkinteger(L, 3);
+  // 参数4 目标table开始位置
   lua_Integer t = luaL_checkinteger(L, 4);
+  // 参数5 目标table，没有就把源table作为目标
   int tt = !lua_isnoneornil(L, 5) ? 5 : 1;  /* destination table */
   checktab(L, 1, TAB_R);
   checktab(L, tt, TAB_W);
@@ -156,8 +160,11 @@ static int tconcat (lua_State *L) {
   luaL_Buffer b;
   lua_Integer last = aux_getn(L, 1, TAB_R);
   size_t lsep;
+  // 参数2 分隔符
   const char *sep = luaL_optlstring(L, 2, "", &lsep);
+  // 参数3 开始位置
   lua_Integer i = luaL_optinteger(L, 3, 1);
+  // 参数4 结束位置，没有的话就是table长度
   last = luaL_optinteger(L, 4, last);
   luaL_buffinit(L, &b);
   for (; i < last; i++) {
@@ -192,7 +199,9 @@ static int tpack (lua_State *L) {
 
 static int tunpack (lua_State *L) {
   lua_Unsigned n;
+  // 参数2 开始位置
   lua_Integer i = luaL_optinteger(L, 2, 1);
+  // 参数3 结束位置
   lua_Integer e = luaL_opt(L, luaL_checkinteger, 3, luaL_len(L, 1));
   if (i > e) return 0;  /* empty range */
   n = (lua_Unsigned)e - i;  /* number of elements minus 1 (avoid overflows) */

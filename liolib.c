@@ -265,9 +265,20 @@ static void opencheck (lua_State *L, const char *fname, const char *mode) {
     luaL_error(L, "cannot open file '%s' (%s)", fname, strerror(errno));
 }
 
-
+/*
+c fopen mode:
+"r": read mode (the default);
+"w": write mode;
+"a": append mode;
+"r+": update mode, all previous data is preserved;
+"w+": update mode, all previous data is erased;
+"a+": append update mode, previous data is preserved, writing is only allowed at the end of file.
+The mode string can also have a 'b' at the end, which is needed in some systems to open the file in binary mode.
+*/
 static int io_open (lua_State *L) {
+  // 参数1 文件名
   const char *filename = luaL_checkstring(L, 1);
+  // 参数2 打开模式 默认为 'r'
   const char *mode = luaL_optstring(L, 2, "r");
   LStream *p = newfile(L);
   const char *md = mode;  /* to traverse/check mode */
@@ -314,7 +325,11 @@ static FILE *getiofile (lua_State *L, const char *findex) {
   return p->f;
 }
 
-
+/*
+参数为字符串 作为文件打开
+参数为file handle 设置为当前流（输入\输出\错误）的默认file handle
+没有参数 则使用当前流的默认file handle
+*/
 static int g_iofile (lua_State *L, const char *f, const char *mode) {
   if (!lua_isnoneornil(L, 1)) {
     const char *filename = lua_tostring(L, 1);
@@ -357,7 +372,7 @@ static int io_readline (lua_State *L);
 ** the following upvalues:
 ** 1) The file being read (first value in the stack)
 ** 2) the number of arguments to read
-** 3) a boolean, true iff file has to be closed when finished ('toclose')
+** 3) a boolean, true if file has to be closed when finished ('toclose')
 ** *) a variable number of format arguments (rest of the stack)
 */
 static void aux_lines (lua_State *L, int toclose) {
@@ -383,6 +398,7 @@ static int f_lines (lua_State *L) {
 ** closed, also returns the file itself as a second result (to be
 ** closed as the state at the exit of a generic for).
 */
+// 如果是打开新文件的形式（参数1是文件名字符串），会自动在读取失败时关闭打开的文件
 static int io_lines (lua_State *L) {
   int toclose;
   if (lua_isnone(L, 1)) lua_pushnil(L);  /* at least one argument */
@@ -562,7 +578,14 @@ static int read_chars (lua_State *L, FILE *f, size_t n) {
   return (nr > 0);  /* true iff read something */
 }
 
-
+/*
+读取模式：
+"n": 读取一个数值，并作为double或者integer返回，总是按最长可能来读取
+"a": 从当前位置读取整个文件，如果当前位置在文件末尾则返回空字符串，NOTE:这个模式不会失败
+"l": 默认的模式，读取一行并扔掉换行符
+"L": 读取一行并保留换行符
+number: 读取指定数量的字节的字符串
+*/
 static int g_read (lua_State *L, FILE *f, int first) {
   int nargs = lua_gettop(L) - 1;
   int n, success;
@@ -692,7 +715,13 @@ static int f_write (lua_State *L) {
   return g_write(L, f, 2);
 }
 
-
+/*
+设置当前流位置
+参数3 offset 是在base上的偏移字节
+"set": base is position 0 (beginning of the file);
+"cur": base is current position;
+"end": base is end of file;
+*/
 static int f_seek (lua_State *L) {
   static const int mode[] = {SEEK_SET, SEEK_CUR, SEEK_END};
   static const char *const modenames[] = {"set", "cur", "end", NULL};
@@ -711,7 +740,13 @@ static int f_seek (lua_State *L) {
   }
 }
 
-
+/*
+设置文件的缓冲池模式
+参数3 指定缓冲池大小f
+"no": no buffering.
+"full": full buffering.
+"line": line buffering.
+*/
 static int f_setvbuf (lua_State *L) {
   static const int mode[] = {_IONBF, _IOFBF, _IOLBF};
   static const char *const modenames[] = {"no", "full", "line", NULL};
@@ -723,7 +758,7 @@ static int f_setvbuf (lua_State *L) {
 }
 
 
-
+// 等同于io.output():flush() -> 即 f_flush()
 static int io_flush (lua_State *L) {
   return luaL_fileresult(L, fflush(getiofile(L, IO_OUTPUT)) == 0, NULL);
 }

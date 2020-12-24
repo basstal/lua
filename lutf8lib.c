@@ -89,6 +89,10 @@ static const char *utf8_decode (const char *s, utfint *val, int strict) {
 ** start in the range [i,j], or nil + current position if 's' is not
 ** well formed in that interval
 */
+/*
+获得utf8字符串的长度，i指定开始字节，j指定结束字节
+如果无法解析 则返回nil 以及 开始字节
+*/
 static int utflen (lua_State *L) {
   lua_Integer n = 0;  /* counter for the number of characters */
   size_t len;  /* string length in bytes */
@@ -180,6 +184,9 @@ static int utfchar (lua_State *L) {
 ** offset(s, n, [i])  -> index where n-th character counting from
 **   position 'i' starts; 0 means character at 'i'.
 */
+/*
+返回第n个字符（utf-8）的（字节）位置，负数n代表从后往前，可以选择从第i个字节位置开始
+*/
 static int byteoffset (lua_State *L) {
   size_t len;
   const char *s = luaL_checklstring(L, 1, &len);
@@ -257,7 +264,9 @@ static int iter_auxlax (lua_State *L) {
 static int iter_codes (lua_State *L) {
   int lax = lua_toboolean(L, 2);
   luaL_checkstring(L, 1);
+  // 迭代器 将查找参数2指定的字节位置开始的下一个utf8字符，返回字节位置和codepoint
   lua_pushcfunction(L, lax ? iter_auxlax : iter_auxstrict);
+  // 迭代器 参数1 codes传入的字符串 参数2 0（找到第一个utf8字符）
   lua_pushvalue(L, 1);
   lua_pushinteger(L, 0);
   return 3;
