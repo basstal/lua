@@ -1117,10 +1117,12 @@ void luaV_finishOp (lua_State *L) {
 
 
 void luaV_execute (lua_State *L, CallInfo *ci) {
+  // Lua闭包
   LClosure *cl;
   TValue *k;
   StkId base;
   const Instruction *pc;
+  // 陷阱
   int trap;
 #if LUA_USE_JUMPTABLE
 #include "ljumptab.h"
