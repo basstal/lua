@@ -17,6 +17,10 @@
 
 LUAI_DDEF const lu_byte luaP_opmodes[NUM_OPCODES] = {
 /*       MM OT IT T  A  mode		   opcode  */
+/*
+IT -> 指令是否会修改寄存器 A，帮助调试模块跟踪最后改变寄存器内容的指令位置
+OT -> 表示当前指令是否涉及一次条件跳转
+*/
   opmode(0, 0, 0, 0, 1, iABC)		/* OP_MOVE */
  ,opmode(0, 0, 0, 0, 1, iAsBx)		/* OP_LOADI */
  ,opmode(0, 0, 0, 0, 1, iAsBx)		/* OP_LOADF */

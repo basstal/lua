@@ -163,6 +163,7 @@ typedef struct CallInfo {
   struct CallInfo *previous, *next;  /* dynamic call link */
   union {
     struct {  /* only for Lua functions */
+      // savedpc 指向当前指令的指针
       const Instruction *savedpc;
       volatile l_signalT trap;
       int nextraargs;  /* # of extra arguments in vararg functions */

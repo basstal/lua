@@ -1142,6 +1142,7 @@ void luaV_execute (lua_State *L, CallInfo *ci) {
     }
     ci->u.l.trap = 1;  /* assume trap is on, for now */
   }
+  // 当前数据栈底的位置
   base = ci->func + 1;
   /* main loop of interpreter */
   for (;;) {
