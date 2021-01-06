@@ -60,13 +60,13 @@ LOCAL = $(TESTS) $(CWARNS)
 
 
 # enable Linux goodies
-MYCFLAGS= $(LOCAL) -std=c99 -DLUA_USE_LINUX -DLUA_USE_READLINE
+MYCFLAGS= $(LOCAL) -std=c99 -DLUA_USE_LINUX 
 MYLDFLAGS= $(LOCAL) -Wl,-E
-MYLIBS= -ldl -lreadline
+MYLIBS= -ldl 
 
 
 CC= gcc
-CFLAGS= -Wall -O2 $(MYCFLAGS) -fno-stack-protector -fno-common -march=native
+CFLAGS= -g -Wall -O2 $(MYCFLAGS) -fno-stack-protector -fno-common -march=native
 AR= ar rc
 RANLIB= ranlib
 RM= rm -f
@@ -89,9 +89,12 @@ LIB_O=	lbaselib.o ldblib.o liolib.o lmathlib.o loslib.o ltablib.o lstrlib.o \
 LUA_T=	lua
 LUA_O=	lua.o
 
+LUAC_T = luac
+LUAC_O = luac.o
 
-ALL_T= $(CORE_T) $(LUA_T)
-ALL_O= $(CORE_O) $(LUA_O) $(AUX_O) $(LIB_O)
+
+ALL_T= $(CORE_T) $(LUA_T) $(LUAC_T)
+ALL_O= $(CORE_O) $(LUA_O) $(AUX_O) $(LIB_O) $(LUAC_O)
 ALL_A= $(CORE_T)
 
 all:	$(ALL_T)
@@ -108,6 +111,8 @@ $(CORE_T): $(CORE_O) $(AUX_O) $(LIB_O)
 $(LUA_T): $(LUA_O) $(CORE_T)
 	$(CC) -o $@ $(MYLDFLAGS) $(LUA_O) $(CORE_T) $(LIBS) $(MYLIBS) $(DL)
 
+$(LUAC_T): $(LUAC_O) $(CORE_T)
+	$(CC) -o $@ $(MYLDFLAGS) $(LUAC_O) $(CORE_T) $(LIBS) $(MYLIBS) $(DL)
 
 clean:
 	$(RM) $(ALL_T) $(ALL_O)
