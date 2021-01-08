@@ -862,6 +862,7 @@ static GCObject **sweeptolive (lua_State *L, GCObject **p) {
 */
 static void checkSizes (lua_State *L, global_State *g) {
   if (!g->gcemergency) {
+    // 如果超过平均4个桶/元素，则将桶大小缩减到原来的一半
     if (g->strt.nuse < g->strt.size / 4) {  /* string table too big? */
       l_mem olddebt = g->GCdebt;
       luaS_resize(L, g->strt.size / 2);

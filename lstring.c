@@ -39,7 +39,7 @@ int luaS_eqlngstr (TString *a, TString *b) {
      (memcmp(getstr(a), getstr(b), len) == 0));  /* equal contents */
 }
 
-
+// 字符串哈希函数，每个字符都纳入哈希值计算
 unsigned int luaS_hash (const char *str, size_t l, unsigned int seed) {
   unsigned int h = seed ^ cast_uint(l);
   for (; l > 0; l--)
@@ -82,6 +82,7 @@ static void tablerehash (TString **vect, int osize, int nsize) {
 ** (This can degrade performance, but any non-zero size should work
 ** correctly.)
 */
+// 调整stringtable的大小到nsize，可以缩小or增大，若增大的stringtable尺寸无法成功分配，则维持原来大小
 void luaS_resize (lua_State *L, int nsize) {
   stringtable *tb = &G(L)->strt;
   int osize = tb->size;
@@ -146,9 +147,11 @@ static TString *createstrobj (lua_State *L, size_t l, int tag, unsigned int h) {
   size_t totalsize;  /* total size of TString object */
   totalsize = sizelstring(l);
   o = luaC_newobj(L, tag, totalsize);
+  // 将GCObject转换为TString
   ts = gco2ts(o);
   ts->hash = h;
   ts->extra = 0;
+  // 将结尾处替换为空字符【标准C字符串】
   getstr(ts)[l] = '\0';  /* ending 0 */
   return ts;
 }
@@ -177,6 +180,7 @@ static void growstrtab (lua_State *L, stringtable *tb) {
     if (tb->nuse == MAX_INT)  /* still too many? */
       luaM_error(L);  /* cannot even create a message... */
   }
+  // 桶数量扩容两倍大小
   if (tb->size <= MAXSTRTB / 2)  /* can grow string table? */
     luaS_resize(L, tb->size * 2);
 }
@@ -185,13 +189,16 @@ static void growstrtab (lua_State *L, stringtable *tb) {
 /*
 ** Checks whether short string exists and reuses it or creates a new one.
 */
+// 插入短字符串
 static TString *internshrstr (lua_State *L, const char *str, size_t l) {
   TString *ts;
   global_State *g = G(L);
   stringtable *tb = &g->strt;
   unsigned int h = luaS_hash(str, l, g->seed);
+  // 取散列表相同哈希值的桶
   TString **list = &tb->hash[lmod(h, tb->size)];
   lua_assert(str != NULL);  /* otherwise 'memcmp'/'memcpy' are undefined */
+  // 从桶列表中查找长度相等且memcmp完全相同的字符串
   for (ts = *list; ts != NULL; ts = ts->u.hnext) {
     if (l == ts->shrlen && (memcmp(str, getstr(ts), l * sizeof(char)) == 0)) {
       /* found! */
@@ -201,13 +208,17 @@ static TString *internshrstr (lua_State *L, const char *str, size_t l) {
     }
   }
   /* else must create a new string */
+  // 字符串总数量大于等于桶数量
   if (tb->nuse >= tb->size) {  /* need to grow string table? */
     growstrtab(L, tb);
     list = &tb->hash[lmod(h, tb->size)];  /* rehash with new size */
   }
+  // 构造一个新的短字符串数据结构
   ts = createstrobj(L, l, LUA_VSHRSTR, h);
+  // 赋值contents部分
   memcpy(getstr(ts), str, l * sizeof(char));
   ts->shrlen = cast_byte(l);
+  // 将创建的TString插入到对应哈希桶的头部，并递增总字符串数量
   ts->u.hnext = *list;
   *list = ts;
   tb->nuse++;
@@ -218,6 +229,7 @@ static TString *internshrstr (lua_State *L, const char *str, size_t l) {
 /*
 ** new string (with explicit length)
 */
+// 通用的构造新字符串的方法
 TString *luaS_newlstr (lua_State *L, const char *str, size_t l) {
   if (l <= LUAI_MAXSHORTLEN)  /* short string? */
     return internshrstr(L, str, l);
@@ -247,6 +259,7 @@ TString *luaS_new (lua_State *L, const char *str) {
       return p[j];  /* that is it */
   }
   /* normal route */
+  // 将新的\0结尾字符串插入到strcache对应
   for (j = STRCACHE_M - 1; j > 0; j--)
     p[j] = p[j - 1];  /* move out last element */
   /* new element is first in the list */

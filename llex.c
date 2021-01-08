@@ -74,6 +74,7 @@ void luaX_init (lua_State *L) {
   for (i=0; i<NUM_RESERVED; i++) {
     TString *ts = luaS_new(L, luaX_tokens[i]);
     luaC_fix(L, obj2gco(ts));  /* reserved words are never collected */
+    // 标识为保留关键字
     ts->extra = cast_byte(i+1);  /* reserved word */
   }
 }
