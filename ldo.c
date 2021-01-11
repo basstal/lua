@@ -436,6 +436,7 @@ void luaD_poscall (lua_State *L, CallInfo *ci, int nres) {
     L->top = rethook(L, ci, L->top - nres, nres);
   L->ci = ci->previous;  /* back to caller */
   /* move results to proper place */
+  // 将返回值保存在合适位置
   moveresults(L, ci->func, nres, ci->nresults);
 }
 
@@ -503,22 +504,30 @@ CallInfo *luaD_precall (lua_State *L, StkId func, int nresults) {
       n = (*f)(L);  /* do the actual call */
       lua_lock(L);
       api_checknelems(L, n);
+      // 如果是一个C函数调用，还需要恢复一些状态信息
       luaD_poscall(L, ci, n);
       return NULL;
     }
     case LUA_VLCL: {  /* Lua function */
       CallInfo *ci;
+      // 获得传入函数的函数原型（parser过后的）
       Proto *p = clLvalue(s2v(func))->p;
+      // 实参在堆栈中的起始下标
       int narg = cast_int(L->top - func) - 1;  /* number of real arguments */
+      // 形参个数
       int nfixparams = p->numparams;
+      // 函数需要的最大堆栈帧空间
       int fsize = p->maxstacksize;  /* frame size */
       checkstackGCp(L, fsize, func);
+      // 获得CallInfo，并且设置为当前线程的执行的CallInfo
       L->ci = ci = next_ci(L);
+      // 设置CallInfo的一系列参数（Lua函数形式）
       ci->nresults = nresults;
       ci->u.l.savedpc = p->code;  /* starting point */
       ci->top = func + 1 + fsize;
       ci->func = func;
       L->ci = ci;
+      // 将没有显示参数传递的参数置为nil
       for (; narg < nfixparams; narg++)
         setnilvalue(s2v(L->top++));  /* complete missing arguments */
       lua_assert(ci->top <= L->stack_last);

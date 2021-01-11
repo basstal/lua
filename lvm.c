@@ -1121,6 +1121,7 @@ void luaV_execute (lua_State *L, CallInfo *ci) {
   LClosure *cl;
   TValue *k;
   StkId base;
+  // 指令
   const Instruction *pc;
   // 陷阱
   int trap;
@@ -1131,6 +1132,7 @@ void luaV_execute (lua_State *L, CallInfo *ci) {
   trap = L->hookmask;
  returning:  /* trap already set */
   cl = clLvalue(s2v(ci->func));
+  // 函数使用的常量
   k = cl->p->k;
   pc = ci->u.l.savedpc;
   if (trap) {
@@ -1142,7 +1144,7 @@ void luaV_execute (lua_State *L, CallInfo *ci) {
     }
     ci->u.l.trap = 1;  /* assume trap is on, for now */
   }
-  // 当前数据栈底的位置
+  // 当前数据栈底的位置，即函数本地堆栈位置+1
   base = ci->func + 1;
   /* main loop of interpreter */
   for (;;) {
