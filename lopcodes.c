@@ -18,8 +18,12 @@
 LUAI_DDEF const lu_byte luaP_opmodes[NUM_OPCODES] = {
 /*       MM OT IT T  A  mode		   opcode  */
 /*
-IT -> 指令是否会修改寄存器 A，帮助调试模块跟踪最后改变寄存器内容的指令位置
-OT -> 表示当前指令是否涉及一次条件跳转
+** mode -> op mode
+** A -> instruction set register A / 指令会不会赋值给寄存器A，帮助调试模块跟踪最后改变寄存器内容的指令位置
+** T -> operator is a test (next instruction must be a jump) / 表示这条指令是不是一条逻辑测试相关指令，指令可能修改pc
+** IT -> instruction uses 'L->top' set by previous instruction (when B == 0) / 该指令使用之前指令设置过的堆栈的下一个可用位置
+** OT -> instruction sets 'L->top' for next instruction (when C == 0) / 指令设置堆栈的下一个可用位置为下一条指令
+** MM -> instruction is an MM instruction (call a metamethod) / 是否是一个调用元方法的指令
 */
   opmode(0, 0, 0, 0, 1, iABC)		/* OP_MOVE */
  ,opmode(0, 0, 0, 0, 1, iAsBx)		/* OP_LOADI */
