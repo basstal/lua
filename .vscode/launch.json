@@ -23,7 +23,21 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C: gcc.exe build lua"
+            "preLaunchTask": "C: gcc.exe build lua interactive"
+        },
+        {
+            "name": "启动，运行当前Lua文件",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/luaSimple.exe",
+            "args": [
+                "${relativeFile}"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "preLaunchTask": "cl simple"
         }
     ]
 }
