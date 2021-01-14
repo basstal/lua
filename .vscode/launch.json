@@ -17,6 +17,22 @@
             "environment": [],
             "externalConsole": false,
             "preLaunchTask": "cl.exe - build luaSimple"
+        },
+        {
+            "name": "luac启动（传入当前打开的Lua脚本）",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/luac.exe",
+            "args": [
+                "-l",
+                "-p",
+                "${relativeFile}",
+                ">",
+                "${fileBasenameNoExtension}.out"
+            ],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "cl.exe - build luac"
+
         }
     ]
 }

@@ -93,6 +93,7 @@ typedef struct expdesc {
 #define RDKCTC		3   /* compile-time constant */
 
 /* description of an active local variable */
+// 激活变量（局部变量、函数参数）的描述
 typedef union Vardesc {
   struct {
     TValuefields;  /* constant value (if it is a compile-time constant) */

@@ -930,6 +930,7 @@ static void exp2reg (FuncState *fs, expdesc *e, int reg) {
 /*
 ** Ensures final expression result is in next available register.
 */
+// 确保最终表达式值在下一个可用的寄存器位置，将一个expdesc结构中存储的表达式信息转换为对应的opcode
 void luaK_exp2nextreg (FuncState *fs, expdesc *e) {
   luaK_dischargevars(fs, e);
   freeexp(fs, e);

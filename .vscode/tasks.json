@@ -10,6 +10,7 @@
             "args": [
                 "/Zi",
                 "/EHsc",
+                "/Od",
                 "/Fe:",
                 "luaSimple.exe",
                 "luaSimple.c",
@@ -55,6 +56,61 @@
             },
             "problemMatcher": [
                 "$msCompile"
+            ],
+        },
+        {
+            "label": "cl.exe - build luac",
+            "type": "shell",
+            "command":"cl.exe",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "args": [
+                "/Z7",
+                "/EHsc",
+                "/Od",
+                "/Fe:",
+                "luac.exe",
+                "luac.c",
+                // core
+                "lapi.c",
+                "lcode.c",
+                "lctype.c",
+                "ldebug.c",
+                "ldo.c",
+                "ldump.c",
+                "lfunc.c",
+                "lgc.c",
+                "llex.c",
+                "lmem.c",
+                "lobject.c",
+                "lopcodes.c",
+                "lparser.c",
+                "lstate.c",
+                "lstring.c",
+                "ltable.c",
+                "ltm.c",
+                "lundump.c",
+                "lvm.c",
+                "lzio.c",
+                "ltests.c",
+                // lauxlib
+                "lauxlib.c",
+                // lib
+                "lbaselib.c",
+                "ldblib.c",
+                "liolib.c",
+                "lmathlib.c",
+                "loslib.c",
+                "ltablib.c",
+                "lstrlib.c",
+                "lutf8lib.c",
+                "loadlib.c",
+                "lcorolib.c",
+                "linit.c"
             ],
         }
     ],

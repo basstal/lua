@@ -314,8 +314,10 @@ static void adjustlocalvars (LexState *ls, int nvars) {
   int i;
   for (i = 0; i < nvars; i++) {
     int vidx = fs->nactvar++;
+    // 获得解析器中的局部变量描述结构
     Vardesc *var = getlocalvardesc(fs, vidx);
     var->vd.ridx = reglevel++;
+    // 局部变量注册
     var->vd.pidx = registerlocalvar(ls, fs, var->vd.name);
   }
 }
@@ -997,6 +999,7 @@ static void body (LexState *ls, expdesc *e, int ismethod, int line) {
 }
 
 
+// 多个表达式连续解析
 static int explist (LexState *ls, expdesc *v) {
   /* explist -> expr { ',' expr } */
   int n = 1;  /* at least one expression */
@@ -1064,7 +1067,6 @@ static void funcargs (LexState *ls, expdesc *f, int line) {
 ** =======================================================================
 */
 
-
 static void primaryexp (LexState *ls, expdesc *v) {
   /* primaryexp -> NAME | '(' expr ')' */
   switch (ls->t.token) {
@@ -1124,7 +1126,7 @@ static void suffixedexp (LexState *ls, expdesc *v) {
   }
 }
 
-
+// 简单的表达式解析：常量浮点、常量整型、字符串、nil、true、false、...、{}、函数、（后缀）表达式
 static void simpleexp (LexState *ls, expdesc *v) {
   /* simpleexp -> FLT | INT | STRING | NIL | TRUE | FALSE | ... |
                   constructor | FUNCTION body | suffixedexp */
@@ -1274,7 +1276,7 @@ static BinOpr subexpr (LexState *ls, expdesc *v, int limit) {
   return op;  /* return first untreated operator */
 }
 
-
+// 解析表达式
 static void expr (LexState *ls, expdesc *v) {
   subexpr(ls, v, 0);
 }
@@ -1712,7 +1714,7 @@ static void checktoclose (LexState *ls, int level) {
   }
 }
 
-
+// 声明局部变量以及局部变量赋值
 static void localstat (LexState *ls) {
   /* stat -> LOCAL NAME ATTRIB { ',' NAME ATTRIB } ['=' explist] */
   FuncState *fs = ls->fs;
