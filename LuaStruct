@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-01-14T07:53:41.254Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36" etag="D0DGFzxAcmXbS8RgyA8r" version="14.2.2" type="github">
+<mxfile host="app.diagrams.net" modified="2021-01-14T08:09:52.341Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36" etag="FQVvZFUb22mP6VS2t9US" version="14.2.2" type="github">
   <diagram id="lg0J1lJSVz_cb5HWxejE" name="Page-1">
-    <mxGraphModel dx="2839" dy="4142" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2331" dy="3870" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1225,10 +1225,10 @@
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-614" value="VNONRELOC" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
           <mxGeometry y="234" width="280" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="Bj-4tIM1OExjbOtvw9EX-618" value="VLOCAL" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
+        <mxCell id="Bj-4tIM1OExjbOtvw9EX-618" value="VLOCAL 局部变量，变量在当前Proto的locvars" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
           <mxGeometry y="260" width="280" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="Bj-4tIM1OExjbOtvw9EX-617" value="VUPVAL" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
+        <mxCell id="Bj-4tIM1OExjbOtvw9EX-617" value="VUPVAL UpValue，变量在上层块中 " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
           <mxGeometry y="286" width="280" height="26" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-619" value="VCONST" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
