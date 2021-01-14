@@ -911,18 +911,20 @@ static void field (LexState *ls, ConsControl *cc) {
   }
 }
 
-
+// 构造table的解析
 static void constructor (LexState *ls, expdesc *t) {
   /* constructor -> '{' [ field { sep field } [sep] ] '}'
      sep -> ',' | ';' */
   FuncState *fs = ls->fs;
   int line = ls->linenumber;
+  // NEWTABLE指令
   int pc = luaK_codeABC(fs, OP_NEWTABLE, 0, 0, 0);
   ConsControl cc;
   luaK_code(fs, 0);  /* space for extra arg. */
   cc.na = cc.nh = cc.tostore = 0;
   cc.t = t;
   init_exp(t, VNONRELOC, fs->freereg);  /* table will be at stack top */
+  // 为额外的指令保留寄存器
   luaK_reserveregs(fs, 1);
   init_exp(&cc.v, VVOID, 0);  /* no value (yet) */
   checknext(ls, '{');
@@ -1126,7 +1128,7 @@ static void suffixedexp (LexState *ls, expdesc *v) {
   }
 }
 
-// 简单的表达式解析：常量浮点、常量整型、字符串、nil、true、false、...、{}、函数、（后缀）表达式
+// 简单的表达式解析：常量浮点、常量整型、字符串、nil、true、false、...、表{}、函数、（后缀）表达式
 static void simpleexp (LexState *ls, expdesc *v) {
   /* simpleexp -> FLT | INT | STRING | NIL | TRUE | FALSE | ... |
                   constructor | FUNCTION body | suffixedexp */
@@ -1867,6 +1869,7 @@ static void statement (LexState *ls) {
       funcstat(ls, line);
       break;
     }
+    // 局部变量的dispatch
     case TK_LOCAL: {  /* stat -> localstat */
       luaX_next(ls);  /* skip LOCAL */
       if (testnext(ls, TK_FUNCTION))  /* local function? */
@@ -1894,6 +1897,7 @@ static void statement (LexState *ls) {
       gotostat(ls);
       break;
     }
+    // 全局变量的dispatch
     default: {  /* stat -> func | assignment */
       exprstat(ls);
       break;

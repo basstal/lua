@@ -387,6 +387,7 @@ static void removelastinstruction (FuncState *fs) {
 ** Emit instruction 'i', checking for array sizes and saving also its
 ** line information. Return 'i' position.
 */
+// 填充指令i行信息等，返回指令i的位置
 int luaK_code (FuncState *fs, Instruction i) {
   Proto *f = fs->f;
   /* put new instruction in code array */
@@ -777,6 +778,7 @@ void luaK_dischargevars (FuncState *fs, expdesc *e) {
       break;
     }
     case VINDEXUP: {
+      // 保留参数A待重定向时才赋值
       e->u.info = luaK_codeABC(fs, OP_GETTABUP, 0, e->u.ind.t, e->u.ind.idx);
       e->k = VRELOC;
       break;
@@ -813,6 +815,7 @@ void luaK_dischargevars (FuncState *fs, expdesc *e) {
 ** non-relocatable expression.
 ** (Expression still may have jump lists.)
 */
+// 将对应的expdesc变量非重定向的表达式，确保表达式值在寄存器reg位置
 static void discharge2reg (FuncState *fs, expdesc *e, int reg) {
   luaK_dischargevars(fs, e);
   switch (e->k) {
@@ -843,11 +846,15 @@ static void discharge2reg (FuncState *fs, expdesc *e, int reg) {
       luaK_int(fs, reg, e->u.ival);
       break;
     }
+    // 重定向的变量
     case VRELOC: {
+      // 根据之前保存在expdesc中的code下标，获得需要重新赋值参数A的指令
       Instruction *pc = &getinstruction(fs, e);
+      // 将参数A赋值为寄存器reg位置
       SETARG_A(*pc, reg);  /* instruction will put result in 'reg' */
       break;
     }
+    // 不可重定向的变量
     case VNONRELOC: {
       if (reg != e->u.info)
         luaK_codeABC(fs, OP_MOVE, reg, e->u.info, 0);
@@ -1036,6 +1043,7 @@ static void codeABRK (FuncState *fs, OpCode o, int a, int b,
 
 /*
 ** Generate code to store result of expression 'ex' into variable 'var'.
+** 生成指令将ex表达式的值保存在(expdesc)var中
 */
 void luaK_storevar (FuncState *fs, expdesc *var, expdesc *ex) {
   switch (var->k) {
@@ -1744,7 +1752,9 @@ void luaK_settablesize (FuncState *fs, int pc, int ra, int asize, int hsize) {
   int extra = asize / (MAXARG_C + 1);  /* higher bits of array size */
   int rc = asize % (MAXARG_C + 1);  /* lower bits of array size */
   int k = (extra > 0);  /* true iff needs extra argument */
+  // 更新NEWTABLE指令的部分参数
   *inst = CREATE_ABCk(OP_NEWTABLE, ra, rb, rc, k);
+  // 在下一行构造一个EXTRAARG指令
   *(inst + 1) = CREATE_Ax(OP_EXTRAARG, extra);
 }
 
