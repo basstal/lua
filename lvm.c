@@ -291,6 +291,7 @@ void luaV_finishget (lua_State *L, const TValue *t, TValue *key, StkId val,
   for (loop = 0; loop < MAXTAGLOOP; loop++) {
     if (slot == NULL) {  /* 't' is not a table? */
       lua_assert(!ttistable(t));
+      // 尝试按对象获取__index metamethod
       tm = luaT_gettmbyobj(L, t, TM_INDEX);
       if (unlikely(notm(tm)))
         luaG_typeerror(L, t, "index");  /* no metamethod */
@@ -298,6 +299,7 @@ void luaV_finishget (lua_State *L, const TValue *t, TValue *key, StkId val,
     }
     else {  /* 't' is a table */
       lua_assert(isempty(slot));
+      // t是table，获得t的元表的__index字段作为metamethod
       tm = fasttm(L, hvalue(t)->metatable, TM_INDEX);  /* table's metamethod */
       if (tm == NULL) {  /* no metamethod? */
         setnilvalue(s2v(val));  /* result is nil */
@@ -305,15 +307,18 @@ void luaV_finishget (lua_State *L, const TValue *t, TValue *key, StkId val,
       }
       /* else will try the metamethod */
     }
+    // __index metamethod 是function
     if (ttisfunction(tm)) {  /* is metamethod a function? */
       luaT_callTMres(L, tm, t, key, val);  /* call it */
       return;
     }
+    // 不是函数，将metamethod作为对象，直接获取key字段
     t = tm;  /* else try to access 'tm[key]' */
     if (luaV_fastget(L, t, key, slot, luaH_get)) {  /* fast track? */
       setobj2s(L, val, slot);  /* done */
       return;
     }
+    // 不是对象也不能获取key字段，将获取到的metamethod作为下一次循环的t
     /* else repeat (tail call 'luaV_finishget') */
   }
   luaG_runerror(L, "'__index' chain too long; possible loop");

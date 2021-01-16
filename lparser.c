@@ -427,16 +427,21 @@ static void singlevaraux (FuncState *fs, TString *n, expdesc *var, int base) {
   if (fs == NULL)  /* no more levels? */
     init_exp(var, VVOID, 0);  /* default is global */
   else {
+    // 在当前环境下查找名称n对应的var变量
     int v = searchvar(fs, n, var);  /* look up locals at current level */
     if (v >= 0) {  /* found? */
+    // 不是base，那么这个被查找的FuncState会被标为在返回时需要关闭upvalues，之后会据此生成对应关闭指令
       if (v == VLOCAL && !base)
         markupval(fs, var->u.var.vidx);  /* local will be used as an upval */
     }
     else {  /* not found as local at current level; try upvalues */
+    // 在这个函数已记录的upvalues中搜索n
       int idx = searchupvalue(fs, n);  /* try existing upvalues */
       if (idx < 0) {  /* not found? */
+      // 在上层函数中继续查找n，并且标记为不是base
         singlevaraux(fs->prev, n, var, 0);  /* try upper levels */
         if (var->k == VLOCAL || var->k == VUPVAL)  /* local or upvalue? */
+         // 给这个函数添加一个新的已记录的upvalues
           idx  = newupvalue(fs, n, var);  /* will be a new upvalue */
         else  /* it is a global or a constant */
           return;  /* don't need to do anything at this level */
@@ -451,15 +456,20 @@ static void singlevaraux (FuncState *fs, TString *n, expdesc *var, int base) {
 ** Find a variable with the given name 'n', handling global variables
 ** too.
 */
+// 解析一个变量的位置（局部、UpVal、_ENV[TABUP])
 static void singlevar (LexState *ls, expdesc *var) {
   TString *varname = str_checkname(ls);
   FuncState *fs = ls->fs;
   singlevaraux(fs, varname, var, 1);
+  // 处理全局名称
   if (var->k == VVOID) {  /* global name? */
     expdesc key;
+    // 在环境中查找_ENV
     singlevaraux(fs, ls->envn, var, 1);  /* get environment variable */
     lua_assert(var->k != VVOID);  /* this one must exist */
+    // 将TString转为indexed使用的expdesc，t为TKSTR
     codestring(&key, varname);  /* key is variable name */
+    // 根据对应key生成表索引指令
     luaK_indexed(fs, var, &key);  /* env[varname] */
   }
 }
@@ -716,6 +726,7 @@ static void codeclosure (LexState *ls, expdesc *v) {
 }
 
 
+// 初始化FuncState
 static void open_func (LexState *ls, FuncState *fs, BlockCnt *bl) {
   Proto *f = fs->f;
   fs->prev = ls->fs;  /* linked list of funcstates */
@@ -839,17 +850,22 @@ static void recfield (LexState *ls, ConsControl *cc) {
   FuncState *fs = ls->fs;
   int reg = ls->fs->freereg;
   expdesc tab, key, val;
+  // key是一个变量名
   if (ls->t.token == TK_NAME) {
     checklimit(fs, cc->nh, MAX_INT, "items in a constructor");
     codename(ls, &key);
   }
+  // key是一个[expr]
   else  /* ls->t.token == '[' */
     yindex(ls, &key);
   cc->nh++;
   checknext(ls, '=');
   tab = *cc->t;
+  // 根据Key的情况
   luaK_indexed(fs, &tab, &key);
+  // 对val求表达式值
   expr(ls, &val);
+  // 生成对应的保存指令
   luaK_storevar(fs, &tab, &val);
   fs->freereg = reg;  /* free registers */
 }
@@ -857,8 +873,11 @@ static void recfield (LexState *ls, ConsControl *cc) {
 
 static void closelistfield (FuncState *fs, ConsControl *cc) {
   if (cc->v.k == VVOID) return;  /* there is no list item */
+  // 将解析的表达式，放在堆栈（寄存器）上
   luaK_exp2nextreg(fs, &cc->v);
+  // 重置暂存解析表达式的载体
   cc->v.k = VVOID;
+  // 
   if (cc->tostore == LFIELDS_PER_FLUSH) {
     luaK_setlist(fs, cc->t->u.info, cc->na, cc->tostore);  /* flush */
     cc->na += cc->tostore;
@@ -885,6 +904,7 @@ static void lastlistfield (FuncState *fs, ConsControl *cc) {
 
 static void listfield (LexState *ls, ConsControl *cc) {
   /* listfield -> exp */
+  // 解析表达式，保存在cc->v中，将cc待保存元素数量增加
   expr(ls, &cc->v);
   cc->tostore++;
 }
@@ -894,12 +914,15 @@ static void field (LexState *ls, ConsControl *cc) {
   /* field -> listfield | recfield */
   switch(ls->t.token) {
     case TK_NAME: {  /* may be 'listfield' or 'recfield' */
+      // 如果是跟着一个=，则是散列方式的赋值
       if (luaX_lookahead(ls) != '=')  /* expression? */
         listfield(ls, cc);
+      // 否则是数组方式的赋值
       else
         recfield(ls, cc);
       break;
     }
+    // 如果是跟着[，则是散列方式的赋值
     case '[': {
       recfield(ls, cc);
       break;
@@ -926,12 +949,16 @@ static void constructor (LexState *ls, expdesc *t) {
   init_exp(t, VNONRELOC, fs->freereg);  /* table will be at stack top */
   // 为额外的指令保留寄存器
   luaK_reserveregs(fs, 1);
+  // 刚开始表构造表达式v为VVOID
   init_exp(&cc.v, VVOID, 0);  /* no value (yet) */
   checknext(ls, '{');
   do {
     lua_assert(cc.v.k == VVOID || cc.tostore > 0);
+    // 未解析到符号 } 时
     if (ls->t.token == '}') break;
+    // 处理数组的解析（保存至寄存器，并生成在超过数量时从寄存器写入数组的指令）
     closelistfield(fs, &cc);
+    // 确定具体的table赋值形式（数组/散列）
     field(ls, &cc);
   } while (testnext(ls, ',') || testnext(ls, ';'));
   check_match(ls, '}', '{', line);
@@ -983,9 +1010,11 @@ static void body (LexState *ls, expdesc *e, int ismethod, int line) {
   /* body ->  '(' parlist ')' block END */
   FuncState new_fs;
   BlockCnt bl;
+  // 构造新的Proto
   new_fs.f = addprototype(ls);
   new_fs.f->linedefined = line;
   open_func(ls, &new_fs, &bl);
+  // 完成函数体的解析，结果保存在new_fs.f中
   checknext(ls, '(');
   if (ismethod) {
     new_localvarliteral(ls, "self");  /* create 'self' parameter */
@@ -997,6 +1026,7 @@ static void body (LexState *ls, expdesc *e, int ismethod, int line) {
   new_fs.f->lastlinedefined = ls->linenumber;
   check_match(ls, TK_END, TK_FUNCTION, line);
   codeclosure(ls, e);
+  // 同步所有FuncState的数据到对应的Proto中
   close_func(ls);
 }
 

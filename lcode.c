@@ -1290,6 +1290,7 @@ void luaK_indexed (FuncState *fs, expdesc *t, expdesc *k) {
   else {
     /* register index of the table */
     t->u.ind.t = (t->k == VLOCAL) ? t->u.var.ridx: t->u.info;
+    // Key是常量string的情况
     if (isKstr(fs, k)) {
       t->u.ind.idx = k->u.info;  /* literal string */
       t->k = VINDEXSTR;
