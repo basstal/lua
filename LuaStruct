@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-01-14T09:50:39.008Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36" etag="srEJ4t3AlvM8BI-S6QK0" version="14.2.2" type="github">
+<mxfile host="app.diagrams.net" modified="2021-01-16T10:37:46.653Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36" etag="c2mi0ixtJD8gKopWuKRk" version="14.2.2" type="github">
   <diagram id="lg0J1lJSVz_cb5HWxejE" name="Page-1">
-    <mxGraphModel dx="2331" dy="3870" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2839" dy="4142" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -973,7 +973,7 @@
         <mxCell id="YTtjsNpqcgucHCqNxcxF-5" value="Proto *f" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" parent="YTtjsNpqcgucHCqNxcxF-4" vertex="1">
           <mxGeometry width="190" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="YTtjsNpqcgucHCqNxcxF-6" value="当前函数头" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" parent="YTtjsNpqcgucHCqNxcxF-4" vertex="1">
+        <mxCell id="YTtjsNpqcgucHCqNxcxF-6" value="指向当前函数原型Proto结构" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" parent="YTtjsNpqcgucHCqNxcxF-4" vertex="1">
           <mxGeometry x="190" width="200" height="20" as="geometry" />
         </mxCell>
         <mxCell id="YTtjsNpqcgucHCqNxcxF-7" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="YTtjsNpqcgucHCqNxcxF-3" vertex="1">
@@ -982,7 +982,7 @@
         <mxCell id="YTtjsNpqcgucHCqNxcxF-8" value="struct FuncState *prev" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" parent="YTtjsNpqcgucHCqNxcxF-7" vertex="1">
           <mxGeometry width="190" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="YTtjsNpqcgucHCqNxcxF-9" value="外围函数" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" parent="YTtjsNpqcgucHCqNxcxF-7" vertex="1">
+        <mxCell id="YTtjsNpqcgucHCqNxcxF-9" value="指向父函数（上层函数）" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" parent="YTtjsNpqcgucHCqNxcxF-7" vertex="1">
           <mxGeometry x="190" width="200" height="20" as="geometry" />
         </mxCell>
         <mxCell id="YTtjsNpqcgucHCqNxcxF-10" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="YTtjsNpqcgucHCqNxcxF-3" vertex="1">
@@ -1210,7 +1210,7 @@
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-609" value="VFALSE" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
           <mxGeometry y="104" width="280" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="Bj-4tIM1OExjbOtvw9EX-610" value="VK" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
+        <mxCell id="Bj-4tIM1OExjbOtvw9EX-610" value="VK VKSTR转换的类型" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
           <mxGeometry y="130" width="280" height="26" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-611" value="VKFLT 数字常量（浮点型）" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
@@ -1219,7 +1219,7 @@
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-612" value="VKINT 数字常量（整型）" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
           <mxGeometry y="182" width="280" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="Bj-4tIM1OExjbOtvw9EX-613" value="VKSTR" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
+        <mxCell id="Bj-4tIM1OExjbOtvw9EX-613" value="VKSTR 字符串作为Table的Key" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
           <mxGeometry y="208" width="280" height="26" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-614" value="VNONRELOC 不可重定位变量" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
@@ -1243,7 +1243,7 @@
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-620" value="VINDEXI" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
           <mxGeometry y="390" width="280" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="Bj-4tIM1OExjbOtvw9EX-622" value="VINDEXSTR" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
+        <mxCell id="Bj-4tIM1OExjbOtvw9EX-622" value="VINDEXSTR 常量字符串作为Table的Key" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
           <mxGeometry y="416" width="280" height="26" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-621" value="VJMP" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-605">
@@ -1338,46 +1338,46 @@
           <mxGeometry y="20" width="393.0599999999995" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-658" value="expdesc v" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-657">
-          <mxGeometry width="123" height="20" as="geometry" />
+          <mxGeometry width="93" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-659" value="表构造时，最后一个表达式信息" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-657">
-          <mxGeometry x="123" width="270" height="20" as="geometry" />
+          <mxGeometry x="93" width="300" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-660" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-656">
           <mxGeometry y="40" width="393.0599999999995" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-661" value="expdesc *t" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-660">
-          <mxGeometry width="123" height="20" as="geometry" />
+          <mxGeometry width="93" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-662" value="构造表相关的表达式，外部传入" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-660">
-          <mxGeometry x="123" width="270" height="20" as="geometry" />
+          <mxGeometry x="93" width="300" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-663" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-656">
           <mxGeometry y="60" width="393.0599999999995" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-664" value="int nh" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-663">
-          <mxGeometry width="123" height="20" as="geometry" />
+          <mxGeometry width="93" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="Bj-4tIM1OExjbOtvw9EX-665" value="初始化时，哈希表已保存元素数量？" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-663">
-          <mxGeometry x="123" width="270" height="20" as="geometry" />
+        <mxCell id="Bj-4tIM1OExjbOtvw9EX-665" value="初始化时，哈希表已写入元素数量" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-663">
+          <mxGeometry x="93" width="300" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-666" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-656">
           <mxGeometry y="80" width="393.0599999999995" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-667" value="int na" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-666">
-          <mxGeometry width="123" height="20" as="geometry" />
+          <mxGeometry width="93" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="Bj-4tIM1OExjbOtvw9EX-668" value="初始化时，数组已保存元素数量？" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-666">
-          <mxGeometry x="123" width="270" height="20" as="geometry" />
+        <mxCell id="Bj-4tIM1OExjbOtvw9EX-668" value="初始化时，数组已写入元素数量" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-666">
+          <mxGeometry x="93" width="300" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-669" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-656">
           <mxGeometry y="100" width="393.0599999999995" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-670" value="int tostore" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-669">
-          <mxGeometry width="123" height="20" as="geometry" />
+          <mxGeometry width="93" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="Bj-4tIM1OExjbOtvw9EX-671" value="数组待保存元素数量？" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-669">
-          <mxGeometry x="123" width="270" height="20" as="geometry" />
+        <mxCell id="Bj-4tIM1OExjbOtvw9EX-671" value="数组待保存元素数量，达到最大值时执行写入操作" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-669">
+          <mxGeometry x="93" width="300" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-11" value="&lt;b&gt;lobject&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=center;container=1;labelPosition=center;verticalLabelPosition=top;verticalAlign=bottom;fontSize=50;recursiveResize=0;" vertex="1" parent="1">
           <mxGeometry x="-960" y="-1340" width="3140" height="1530" as="geometry">
@@ -2313,7 +2313,7 @@
         <mxCell id="rf-OFGccoekNwsG9Lzco-385" value="int linedefined" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=center;" parent="rf-OFGccoekNwsG9Lzco-384" vertex="1">
           <mxGeometry width="200" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="rf-OFGccoekNwsG9Lzco-386" value="调试信息" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" parent="rf-OFGccoekNwsG9Lzco-384" vertex="1">
+        <mxCell id="rf-OFGccoekNwsG9Lzco-386" value="函数原型的开始行（调试信息）" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" parent="rf-OFGccoekNwsG9Lzco-384" vertex="1">
           <mxGeometry x="200" width="230" height="20" as="geometry" />
         </mxCell>
         <mxCell id="rf-OFGccoekNwsG9Lzco-387" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="rf-OFGccoekNwsG9Lzco-341" vertex="1">
