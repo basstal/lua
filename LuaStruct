@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-01-16T10:37:46.653Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36" etag="c2mi0ixtJD8gKopWuKRk" version="14.2.2" type="github">
+<mxfile host="app.diagrams.net" modified="2021-01-18T06:15:44.523Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36" etag="S6vbNvQFkWe6bKRU3UEF" version="14.2.2" type="github">
   <diagram id="lg0J1lJSVz_cb5HWxejE" name="Page-1">
-    <mxGraphModel dx="2839" dy="4142" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2635" dy="4033" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1901,7 +1901,7 @@
           <mxGeometry x="138" width="122" height="20" as="geometry" />
         </mxCell>
         <mxCell id="rf-OFGccoekNwsG9Lzco-275" value="LClosure" style="shape=table;html=1;whiteSpace=wrap;startSize=20;container=1;collapsible=1;childLayout=tableLayout;fontStyle=1;align=center;sketch=0;fillColor=#dae8fc;backgroundOutline=0;treeFolding=0;comic=0;moveCells=0;treeMoving=0;resizeHeight=0;resizeWidth=0;rotatable=1;cloneable=1;deletable=1;resizable=1;movableLabel=0;movable=1;metaEdit=0;editable=1;expand=1;fixedRows=0;resizeLastRow=0;overflow=visible;noLabel=0;dropTarget=1;autosize=0;fixDash=0;perimeter=rectanglePerimeter;snapToPoint=0;allowArrows=1;connectable=1;portConstraintRotation=0;labelPadding=0;fillOpacity=100;strokeOpacity=100;resizeLast=0;arcSize=15;strokeColor=#6c8ebf;" parent="Bj-4tIM1OExjbOtvw9EX-11" vertex="1">
-          <mxGeometry x="1690" y="1170" width="380" height="160" as="geometry">
+          <mxGeometry x="1690" y="1170" width="380" height="180.00000000000136" as="geometry">
             <mxRectangle x="50" y="50" width="100" height="30" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -1960,13 +1960,13 @@
           <mxGeometry x="200" width="180" height="20" as="geometry" />
         </mxCell>
         <mxCell id="rf-OFGccoekNwsG9Lzco-294" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="rf-OFGccoekNwsG9Lzco-275" vertex="1">
-          <mxGeometry y="140" width="380" height="20" as="geometry" />
+          <mxGeometry y="140" width="380" height="40" as="geometry" />
         </mxCell>
         <mxCell id="rf-OFGccoekNwsG9Lzco-295" value="UpVal *upvals[1]" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=center;" parent="rf-OFGccoekNwsG9Lzco-294" vertex="1">
-          <mxGeometry width="200" height="20" as="geometry" />
+          <mxGeometry width="200" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="rf-OFGccoekNwsG9Lzco-296" value="upvalues(struct UpVal)的列表" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" parent="rf-OFGccoekNwsG9Lzco-294" vertex="1">
-          <mxGeometry x="200" width="180" height="20" as="geometry" />
+        <mxCell id="rf-OFGccoekNwsG9Lzco-296" value="upvalues的列表，保存外部引用的局部变量" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" parent="rf-OFGccoekNwsG9Lzco-294" vertex="1">
+          <mxGeometry x="200" width="180" height="40" as="geometry" />
         </mxCell>
         <mxCell id="rf-OFGccoekNwsG9Lzco-340" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="Bj-4tIM1OExjbOtvw9EX-11" source="rf-OFGccoekNwsG9Lzco-294" target="rf-OFGccoekNwsG9Lzco-299" edge="1">
           <mxGeometry relative="1" as="geometry" />
