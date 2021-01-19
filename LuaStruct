@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-01-18T06:15:44.523Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36" etag="S6vbNvQFkWe6bKRU3UEF" version="14.2.2" type="github">
+<mxfile host="app.diagrams.net" modified="2021-01-19T10:10:44.968Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36" etag="FR-pQp7R2mutTVebOMbv" version="14.2.2" type="github">
   <diagram id="lg0J1lJSVz_cb5HWxejE" name="Page-1">
-    <mxGraphModel dx="2635" dy="4033" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2467" dy="3942" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1153,45 +1153,45 @@
           <mxGeometry x="200" width="40" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-598" value="expdesc" style="shape=table;html=1;whiteSpace=wrap;startSize=20;container=1;collapsible=1;childLayout=tableLayout;fontStyle=1;align=center;sketch=0;fillColor=#dae8fc;backgroundOutline=0;treeFolding=0;comic=0;moveCells=0;treeMoving=0;resizeHeight=0;resizeWidth=0;rotatable=1;cloneable=1;deletable=1;resizable=1;movableLabel=0;movable=1;metaEdit=0;editable=1;expand=1;fixedRows=0;resizeLastRow=0;overflow=visible;noLabel=0;dropTarget=1;autosize=0;fixDash=0;perimeter=rectanglePerimeter;snapToPoint=0;allowArrows=1;connectable=1;portConstraintRotation=0;labelPadding=0;fillOpacity=100;strokeOpacity=100;resizeLast=0;arcSize=15;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-2">
-          <mxGeometry x="500" y="320" width="310" height="340" as="geometry">
+          <mxGeometry x="500" y="320" width="370" height="340" as="geometry">
             <mxRectangle x="50" y="50" width="100" height="30" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-599" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-598">
-          <mxGeometry y="20" width="310" height="20" as="geometry" />
+          <mxGeometry y="20" width="370" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-600" value="expkind k" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-599">
           <mxGeometry width="240" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-601" value="具体类型" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-599">
-          <mxGeometry x="240" width="70" height="20" as="geometry" />
+          <mxGeometry x="240" width="130" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-602" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-598">
-          <mxGeometry y="40" width="310" height="260" as="geometry" />
+          <mxGeometry y="40" width="370" height="260" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-603" value="[union] u&lt;br&gt;&lt;table border=&quot;1&quot; style=&quot;font-family: &amp;#34;helvetica&amp;#34; ; border: 1px solid rgb(212 , 225 , 245) ; border-collapse: collapse&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;lua_Integer ival&lt;/td&gt;&lt;td&gt;VKINT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;lua_Number nval&lt;/td&gt;&lt;td&gt;VKFLT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TString *strval&lt;/td&gt;&lt;td&gt;VKSTR&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;int info&lt;/td&gt;&lt;td&gt;通用信息&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;background-color: rgb(218 , 232 , 252)&quot;&gt;struct ind&lt;br&gt;&lt;table border=&quot;1&quot; style=&quot;border: 1px solid rgb(212 , 225 , 245) ; border-collapse: collapse&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;short idx&lt;/td&gt;&lt;td&gt;下标（寄存器/常量）&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;lu_byte t&lt;/td&gt;&lt;td&gt;表（寄存器/upvalue）&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/td&gt;&lt;td&gt;下标变量使用&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;background-color: rgb(218 , 232 , 252)&quot;&gt;struct var&lt;br&gt;&lt;table border=&quot;1&quot; style=&quot;border: 1px solid rgb(212 , 225 , 245) ; border-collapse: collapse&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;lu_byte ridx&lt;/td&gt;&lt;td&gt;寄存器下标&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;unsigned shrot vidx&lt;/td&gt;&lt;td&gt;编译时下标&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/td&gt;&lt;td&gt;局部变量使用&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;top=0;left=0;bottom=0;right=0;overflow=hidden;fillColor=#FFFFCC;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-602">
           <mxGeometry width="240" height="260" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-604" value="根据不同类型存储的数据有所区分" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-602">
-          <mxGeometry x="240" width="70" height="260" as="geometry" />
+          <mxGeometry x="240" width="130" height="260" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-631" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-598">
-          <mxGeometry y="300" width="310" height="20" as="geometry" />
+          <mxGeometry y="300" width="370" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-632" value="int t" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;top=0;left=0;bottom=0;right=0;overflow=hidden;fillColor=none;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-631">
           <mxGeometry width="240" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="Bj-4tIM1OExjbOtvw9EX-633" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-631">
-          <mxGeometry x="240" width="70" height="20" as="geometry" />
+        <mxCell id="Bj-4tIM1OExjbOtvw9EX-633" value="条件为真的跳转链表" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-631">
+          <mxGeometry x="240" width="130" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-628" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-598">
-          <mxGeometry y="320" width="310" height="20" as="geometry" />
+          <mxGeometry y="320" width="370" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-629" value="int f" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;top=0;left=0;bottom=0;right=0;overflow=hidden;fillColor=none;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-628">
           <mxGeometry width="240" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="Bj-4tIM1OExjbOtvw9EX-630" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-628">
-          <mxGeometry x="240" width="70" height="20" as="geometry" />
+        <mxCell id="Bj-4tIM1OExjbOtvw9EX-630" value="条件为假的跳转链表" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-628">
+          <mxGeometry x="240" width="130" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Bj-4tIM1OExjbOtvw9EX-605" value="enum expkind" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#d5e8d4;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;comic=0;sketch=0;strokeColor=#82b366;fontSize=12;align=center;" vertex="1" parent="Bj-4tIM1OExjbOtvw9EX-2">
           <mxGeometry x="920" y="30.510000000000005" width="280" height="546" as="geometry">
