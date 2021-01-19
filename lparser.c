@@ -721,6 +721,7 @@ static Proto *addprototype (LexState *ls) {
 */
 static void codeclosure (LexState *ls, expdesc *v) {
   FuncState *fs = ls->fs->prev;
+  // 因为函数是第一个类类型的数据，同样需要重定向，因为后面需要将这个函数体与具体的变量进行绑定，而此时并不知道对应的寄存器地址
   init_exp(v, VRELOC, luaK_codeABx(fs, OP_CLOSURE, 0, fs->np - 1));
   luaK_exp2nextreg(fs, v);  /* fix it at the last register */
 }
@@ -985,6 +986,7 @@ static void parlist (LexState *ls) {
     do {
       switch (ls->t.token) {
         case TK_NAME: {
+          // 根据变量名生成对应的局部变量
           new_localvar(ls, str_checkname(ls));
           nparams++;
           break;
@@ -1020,6 +1022,7 @@ static void body (LexState *ls, expdesc *e, int ismethod, int line) {
     new_localvarliteral(ls, "self");  /* create 'self' parameter */
     adjustlocalvars(ls, 1);
   }
+  // 解析函数参数列表
   parlist(ls);
   checknext(ls, ')');
   statlist(ls);
@@ -1803,6 +1806,7 @@ static int funcname (LexState *ls, expdesc *v) {
 }
 
 
+// 函数体声明和解析
 static void funcstat (LexState *ls, int line) {
   /* funcstat -> FUNCTION funcname body */
   int ismethod;

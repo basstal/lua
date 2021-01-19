@@ -91,6 +91,7 @@ UpVal *luaF_findupval (lua_State *L, StkId level) {
   lua_assert(isintwups(L) || L->openupval == NULL);
   while ((p = *pp) != NULL && uplevel(p) >= level) {  /* search for it */
     lua_assert(!isdead(G(L), p));
+    // 从openupval中找到对应level的UpVal
     if (uplevel(p) == level)  /* corresponding upvalue? */
       return p;  /* return it */
     pp = &p->u.open.next;
@@ -222,6 +223,7 @@ void luaF_unlinkupval (UpVal *uv) {
 
 int luaF_close (lua_State *L, StkId level, int status) {
   UpVal *uv;
+  // 对大于level位置的upval检查引用并释放
   while ((uv = L->openupval) != NULL && uplevel(uv) >= level) {
     TValue *slot = &uv->u.value;  /* new position for value */
     lua_assert(uplevel(uv) < L->top);

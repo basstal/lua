@@ -431,9 +431,11 @@ static void moveresults (lua_State *L, StkId res, int nres, int wanted) {
 ** Finishes a function call: calls hook if necessary, removes CallInfo,
 ** moves current number of results to proper place.
 */
+// 函数调用完毕之后的恢复工作
 void luaD_poscall (lua_State *L, CallInfo *ci, int nres) {
   if (L->hookmask)
     L->top = rethook(L, ci, L->top - nres, nres);
+  // 将CallInfo恢复到上一个CallInfo结构
   L->ci = ci->previous;  /* back to caller */
   /* move results to proper place */
   // 将返回值保存在合适位置
@@ -477,6 +479,7 @@ void luaD_pretailcall (lua_State *L, CallInfo *ci, StkId func, int narg1) {
 ** returns NULL, with all the results on the stack, starting at the
 ** original function position.
 */
+// 函数调用之前的准备工作
 CallInfo *luaD_precall (lua_State *L, StkId func, int nresults) {
   lua_CFunction f;
  retry:

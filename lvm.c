@@ -793,6 +793,7 @@ static void pushclosure (lua_State *L, Proto *p, UpVal **encup, StkId base,
   ncl->p = p;
   setclLvalue2s(L, ra, ncl);  /* anchor new closure in stack */
   for (i = 0; i < nup; i++) {  /* fill in its upvalues */
+    // 如果UpVal在堆栈中，使用luaF_findupval来查找
     if (uv[i].instack)  /* upvalue refers to local variable? */
       ncl->upvals[i] = luaF_findupval(L, base + uv[i].idx);
     else  /* get upvalue from enclosing function */
