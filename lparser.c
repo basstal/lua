@@ -1651,7 +1651,9 @@ static void forstat (LexState *ls, int line) {
   luaX_next(ls);  /* skip 'for' */
   varname = str_checkname(ls);  /* first variable name */
   switch (ls->t.token) {
+    // 数值类for
     case '=': fornum(ls, varname, line); break;
+    // list类for
     case ',': case TK_IN: forlist(ls, varname); break;
     default: luaX_syntaxerror(ls, "'=' or 'in' expected");
   }
